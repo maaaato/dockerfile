@@ -4,14 +4,17 @@ package main
 import (
 	"fmt"
 	"net/http"
+	
+	"github.com/zenazn/goji"
+    "github.com/zenazn/goji/web"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "hello, world")
-	
+
+func hello(c web.C, w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, %s!", c.URLParams["name"])
 }
 
-func main(){
-	http.HandleFunc("/", handler)
-	http.ListenAndServe(":8080", nil)
+func main() {
+	goji.Get("/hello/:name", hello)
+	goji.Serve()
 }
